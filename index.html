@@ -3,21 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мебельрум ZETTA</title>
-
-    <!-- Фавиконки -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./images/logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./images/logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./images/logo.png">
-    <link rel="manifest" href="site.webmanifest">
-
+    <title>МЕБЕЛЬРУМ ZETTA</title>
+    
+    <link rel="icon" type="image/png" href="./images/logo.png">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="light-theme">
 
     <header class="header">
         <div class="logo">
-            <img src="./images/logo.png" alt="Zetta Logo" width="50">
+            <img src="./images/logo.png" alt="ZETTA мебельрум">
         </div>
 
         <nav class="nav">
@@ -27,86 +22,139 @@
             <a href="#projects">Проекты</a>
         </nav>
 
-        <button type="button" id="themeButton" aria-label="Переключить тему">
-            ☀ / ☾
+        <button type="button" class="theme-toggle" id="themeButton" aria-label="Переключить тему">
+            <span>☀</span>
+            <span>☾</span>
         </button>
     </header>
 
     <main>
-
+        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content">
-                <h1>МЕБЕЛЬРУМ ZETTA</h1>
-                <p class="hero-subtitle">Мебель, в которой хочется жить</p>
-                <p>Создаём интерьеры под ваш стиль и комфорт.</p>
-                <button type="button" class="btn">Рассчитать проект</button>
+                <h1>МЕБЕЛЬРУМ<br>ZETTA</h1>
+                <p class="subtitle">Мебель, в которой хочется жить</p>
+                <p class="description">
+                    Проекты любой сложности: от классических модульных до авторских с учетом особенностей помещения.
+                </p>
+                <button type="button" class="btn-primary">Рассчитать проект</button>
             </div>
-
             <div class="hero-image">
-                <img src="./images/hero.avif" alt="Интерьер кухни Zetta" width="400">
+                <img src="./images/hero.avif" alt="Современная кухня ZETTA">
             </div>
         </section>
 
+        <!-- Categories Section -->
         <section class="categories">
-            <div class="category" id="kitchens">
+            <div class="category-card" id="kitchens">
                 <h2>Кухни</h2>
+                <div class="card-divider">◆</div>
+                <div class="card-img"><img src="./images/kitchen.avif" alt="Кухни"></div>
             </div>
-            <div class="category" id="wardrobes">
+            <div class="category-card" id="wardrobes">
                 <h2>Шкафы</h2>
+                <div class="card-divider">◆</div>
+                <div class="card-img"><img src="./images/wardrobe.avif" alt="Шкафы"></div>
             </div>
-            <div class="category" id="dressing">
+            <div class="category-card" id="dressing">
                 <h2>Гардеробные</h2>
+                <div class="card-divider">◆</div>
+                <div class="card-img"><img src="./images/dressing.avif" alt="Гардеробные"></div>
             </div>
         </section>
 
+        <!-- Slider Section -->
         <section class="projects" id="projects">
-            <h2>Наши проекты</h2>
-            <div class="slider" id="slider">
-                <!-- Карусель соберем на следующем шаге -->
+            <h2 class="section-title">Наши проекты</h2>
+            <div class="section-divider">◆</div>
+
+            <div class="slider-wrapper">
+                <button type="button" class="slider-btn prev" id="prevBtn">&#10094;</button>
+                
+                <div class="slider-container" id="sliderTrack">
+                    <div class="slide"><img src="./images/project1.avif" alt="Проект 1"></div>
+                    <div class="slide"><img src="./images/project2.avif" alt="Проект 2"></div>
+                    <div class="slide"><img src="./images/project3.avif" alt="Проект 3"></div>
+                    <div class="slide"><img src="./images/project4.avif" alt="Проект 4"></div>
+                </div>
+
+                <button type="button" class="slider-btn next" id="nextBtn">&#10095;</button>
+            </div>
+
+            <div class="slider-dots" id="sliderDots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
             </div>
         </section>
 
+        <!-- Accordion Section -->
         <section class="advantages">
-            <h2>Почему выбирают нас?</h2>
+            <h2 class="section-title">Почему выбирают нас?</h2>
+            <div class="section-divider">◆</div>
 
             <div class="accordion">
-                <div class="accordion-item">
+                <div class="accordion-item active">
                     <button type="button" class="accordion-header">
-                        Индивидуальный дизайн
+                        <div class="accordion-title">
+                            <span class="icon">✏️</span>
+                            <span>Индивидуальный дизайн</span>
+                        </div>
+                        <span class="arrow">∨</span>
                     </button>
                     <div class="accordion-content">
-                        <p>Разрабатываем дизайн-проект под ваш стиль и особенности помещения.</p>
+                        <p>Создаем уникальные решения с учетом ваших пожеланий и особенностей помещения.</p>
                     </div>
                 </div>
 
                 <div class="accordion-item">
                     <button type="button" class="accordion-header">
-                        Качественные материалы
+                        <div class="accordion-title">
+                            <span class="icon">🛡️</span>
+                            <span>Качественные материалы</span>
+                        </div>
+                        <span class="arrow">∨</span>
                     </button>
                     <div class="accordion-content">
-                        <p>Используем качественные материалы, которые прослужат долгие годы.</p>
+                        <p>Используем только долговечные и экологически безопасные материалы от ведущих фабрик.</p>
                     </div>
                 </div>
 
                 <div class="accordion-item">
                     <button type="button" class="accordion-header">
-                        Проверенные фабрики
+                        <div class="accordion-title">
+                            <span class="icon">🏭</span>
+                            <span>Проверенные фабрики</span>
+                        </div>
+                        <span class="arrow">∨</span>
                     </button>
                     <div class="accordion-content">
-                        <p>Работаем с проверенными производителями мебели.</p>
+                        <p>Сотрудничаем с современными производствами с многоступенчатым контролем качества.</p>
                     </div>
                 </div>
             </div>
         </section>
-
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
-        <p>+7 (917) 331-06-31</p>
-        <p>г. Волгоград, ТЦ «СТИЛЬ», 25 лет Октября 11с</p>
-        <div class="socials">
-            <a href="https://web.max.ru/-76545345217891" target="_blank" rel="noopener noreferrer">Мы в MAX</a>
-            <a href="https://vk.ru/zetta34" target="_blank" rel="noopener noreferrer">Мы в VK</a>
+        <div class="footer-contacts">
+            <div class="contact-item">
+                <span class="contact-icon">📞</span>
+                <span>+7 (917) 331-06-31</span>
+            </div>
+            <div class="contact-item">
+                <span class="contact-icon">📍</span>
+                <span>г. Волгоград, ТЦ «СТИЛЬ», 25 лет Октября 11с</span>
+            </div>
+        </div>
+        <div class="footer-socials">
+            <a href="https://web.max.ru" target="_blank"><span>M</span> Мы в MAX</a>
+            <a href="https://vk.ru/zetta34" target="_blank"><span>VK</span> Мы в VK</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 МЕБЕЛЬРУМ ZETTA. Все права защищены.
         </div>
     </footer>
 
