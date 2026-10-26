@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ---
+    // ПЕРЕКЛЮЧЕНИЕ ТЕМЫ 
     const themeBtn = document.getElementById('themeButton');
     
     themeBtn.addEventListener('click', () => {
@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.toggle('light-theme');
     });
 
-    // --- 2. АККОРДЕОН ---
+    // АККОРДЕОН
     const accordionHeaders = document.querySelectorAll('.accordion-header');
 
     accordionHeaders.forEach(header => {
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 3. СЛАЙДЕР С ПОДДЕРЖКОЙ СВАЙПОВ ---
+    // СЛАЙДЕР С ПОДДЕРЖКОЙ СВАЙПОВ
     const track = document.getElementById('sliderTrack');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
