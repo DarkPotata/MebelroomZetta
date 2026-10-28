@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import Catalog from './components/Catalog';
+import Auth from './components/Auth';
 
 export default function App() {
     // 1. При запуске сначала ищем данные в памяти браузера
@@ -45,6 +46,7 @@ export default function App() {
         <BrowserRouter>
             <Header categories={categories} theme={theme} toggleTheme={toggleTheme} />
             <Routes>
+                <Route path="/auth" element={<Auth />} />
                 <Route path="/" element={<Home categories={categories} />} />
                 <Route path="/:categoryId" element={<Catalog categories={categories} setCategories={setCategories} />} />
                 <Route path="/:categoryId/edit/:productId" element={<Catalog categories={categories} setCategories={setCategories} />} />

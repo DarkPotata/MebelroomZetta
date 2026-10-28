@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import type { Category } from '../types';
 
 interface HeaderProps {
@@ -8,6 +10,8 @@ interface HeaderProps {
 }
 
 export default function Header({ categories, theme, toggleTheme }: HeaderProps) {
+    const { isAuthenticated, logout } = useContext(AuthContext);
+
     return (
         <header className="header">
             <div className="logo">
@@ -18,6 +22,13 @@ export default function Header({ categories, theme, toggleTheme }: HeaderProps) 
                 {categories.map(cat => (
                     <Link key={cat.id} to={`/${cat.id}`}>{cat.title}</Link>
                 ))}
+                
+                {/* Кнопка входа или выхода в зависимости от контекста */}
+                {isAuthenticated ? (
+                    <button type="button" onClick={logout} className="btn-secondary-sm" style={{ marginLeft: '15px' }}>Выйти</button>
+                ) : (
+                    <Link to="/auth" style={{ marginLeft: '15px', color: '#B58B5D', fontWeight: 'bold' }}>Войти</Link>
+                )}
             </nav>
             <button type="button" className="theme-toggle" onClick={toggleTheme}>
                 <span>{theme === 'dark' ? '☀️' : '☾'}</span>
