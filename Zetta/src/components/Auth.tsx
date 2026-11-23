@@ -2,12 +2,14 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export default function Auth() {
     const [isLogin, setIsLogin] = useState(true);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    
+
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -15,7 +17,7 @@ export default function Auth() {
         e.preventDefault();
         setError('');
 
-        const url = isLogin ? 'http://localhost:5000/api/login' : 'http://localhost:5000/api/register';
+        const url = isLogin ? `${API_URL}/api/login` : `${API_URL}/api/register`;
 
         try {
             const response = await fetch(url, {
@@ -46,31 +48,31 @@ export default function Auth() {
     return (
         <main style={{ padding: '50px', textAlign: 'center', minHeight: '60vh' }}>
             <h2 className="section-title">{isLogin ? 'Вход в систему' : 'Регистрация'}</h2>
-            
+
             {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
-            
+
             <form onSubmit={handleSubmit} style={{ display: 'inline-flex', flexDirection: 'column', gap: '15px', width: '320px', marginTop: '20px' }}>
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    value={email} 
-                    onChange={e => setEmail(e.target.value)} 
-                    required 
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
                     style={{ padding: '10px' }}
                 />
-                <input 
-                    type="password" 
-                    placeholder="Пароль" 
-                    value={password} 
-                    onChange={e => setPassword(e.target.value)} 
-                    required 
+                <input
+                    type="password"
+                    placeholder="Пароль"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
                     style={{ padding: '10px' }}
                 />
                 <button type="submit" className="btn-primary">
                     {isLogin ? 'Войти' : 'Зарегистрироваться'}
                 </button>
             </form>
-            
+
             <p style={{ marginTop: '20px', cursor: 'pointer', color: 'gray', textDecoration: 'underline' }} onClick={() => setIsLogin(!isLogin)}>
                 {isLogin ? 'Нет аккаунта? Зарегистрируйтесь' : 'Уже есть аккаунт? Войти'}
             </p>

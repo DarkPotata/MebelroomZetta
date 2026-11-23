@@ -1,6 +1,8 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 interface Product {
     id: number;
@@ -14,20 +16,23 @@ interface Product {
 export default function Catalog() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
-    
-    // Поиск с задержкой (Debounce)
+
     const [searchInput, setSearchInput] = useState('');
     const [debouncedSearch, setDebouncedSearch] = useState('');
-    
-    // Сортировка
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
     const [sortBy, setSortBy] = useState<'title' | 'price'>('title');
 
-    // Состояния формы (Добавление / Редактирование)
     const [editingId, setEditingId] = useState<number | null>(null);
     const [form, setForm] = useState({ title: '', price: '', img: '', category: 'Кухни' });
-    
+
     const { token, isAuthenticated } = useContext(AuthContext);
     const { pathname } = useLocation();
+
+    // Автофокус на поле поиска через useRef
+    useEffect(() => {
+        searchInputRef.current?.focus();
+    }, []);
 
     // Debounce 500ms
     useEffect(() => {
@@ -38,7 +43,7 @@ export default function Catalog() {
     const fetchProducts = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:5000/api/products');
+            const res = await fetch(`${API_URL}/api/products`);
             const data = await res.json();
             setProducts(data);
         } catch (error) {
@@ -54,9 +59,9 @@ export default function Catalog() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const url = editingId 
-            ? `http://localhost:5000/api/products/${editingId}`
-            : 'http://localhost:5000/api/products';
+        const url = editingId
+            ? `${API_URL}/api/products/${editingId}`
+            : `${API_URL}/api/products`;
         const method = editingId ? 'PUT' : 'POST';
 
         const res = await fetch(url, {
@@ -67,7 +72,7 @@ export default function Catalog() {
             },
             body: JSON.stringify({ ...form, price: Number(form.price) })
         });
-        
+
         if (res.ok) {
             fetchProducts();
             handleCancel();
@@ -89,7 +94,7 @@ export default function Catalog() {
 
     const handleDelete = async (id: number) => {
         if (!window.confirm('Уверены, что хотите удалить?')) return;
-        const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+        const res = await fetch(`${API_URL}/api/products/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -97,7 +102,6 @@ export default function Catalog() {
         else alert('Нет прав на удаление этого объекта');
     };
 
-    // Определение категории по URL
     const getCategoryFromPath = () => {
         if (pathname.includes('kitchens')) return 'Кухни';
         if (pathname.includes('wardrobes')) return 'Шкафы';
@@ -107,11 +111,9 @@ export default function Catalog() {
 
     const currentCategory = getCategoryFromPath();
 
-    // Фильтрация и сортировка
     const filteredProducts = products.filter(p => {
         const matchesCategory = currentCategory ? p.category === currentCategory : true;
         const query = debouncedSearch.toLowerCase();
-        // Поиск минимум по двум текстовым полям (название и категория) без учета регистра
         const matchesSearch = p.title.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
         return matchesCategory && matchesSearch;
     }).sort((a, b) => {
@@ -123,15 +125,14 @@ export default function Catalog() {
         <main style={{ padding: '30px' }}>
             <h2 className="section-title">Каталог товаров</h2>
 
-            {/* Форма добавления / редактирования */}
             {isAuthenticated && (
                 <div style={{ marginBottom: '30px', padding: '20px', backgroundColor: 'var(--secondary-bg)', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
                     <h3>{editingId ? 'Редактировать товар' : 'Добавить новый товар'}</h3>
                     <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginTop: '15px' }}>
-                        <input placeholder="Название" value={form.title} onChange={e => setForm({...form, title: e.target.value})} required />
-                        <input type="number" placeholder="Цена" value={form.price} onChange={e => setForm({...form, price: e.target.value})} required />
-                        <input placeholder="URL картинки" value={form.img} onChange={e => setForm({...form, img: e.target.value})} required />
-                        <select value={form.category} onChange={e => setForm({...form, category: e.target.value})} style={{ padding: '10px', borderRadius: '5px' }}>
+                        <input placeholder="Название" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} required />
+                        <input type="number" placeholder="Цена" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} required />
+                        <input placeholder="URL картинки" value={form.img} onChange={e => setForm({ ...form, img: e.target.value })} required />
+                        <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} style={{ padding: '10px', borderRadius: '5px' }}>
                             <option value="Кухни">Кухни</option>
                             <option value="Шкафы">Шкафы</option>
                             <option value="Гардеробные">Гардеробные</option>
@@ -142,11 +143,11 @@ export default function Catalog() {
                 </div>
             )}
 
-            {/* Панель поиска и сортировки */}
             <div style={{ marginBottom: '20px', display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-                <input 
-                    type="text" 
-                    placeholder="Поиск (по названию или категории)..." 
+                <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Поиск (по названию или категории)..."
                     value={searchInput}
                     onChange={e => setSearchInput(e.target.value)}
                     style={{ width: '100%', maxWidth: '400px' }}
@@ -157,7 +158,6 @@ export default function Catalog() {
                 </select>
             </div>
 
-            {/* Состояния загрузки и отсутствия данных */}
             {loading ? (
                 <p>Загрузка данных...</p>
             ) : filteredProducts.length === 0 ? (
@@ -170,7 +170,7 @@ export default function Catalog() {
                             <h3>{p.title}</h3>
                             <p style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>{p.price} ₽</p>
                             <p style={{ color: 'gray', fontSize: '0.9em' }}>{p.category}</p>
-                            
+
                             {isAuthenticated && (
                                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '15px' }}>
                                     <button onClick={() => handleEditClick(p)} className="btn-secondary-sm">Редактировать</button>

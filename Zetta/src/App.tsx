@@ -48,8 +48,8 @@ export default function App() {
             <Routes>
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/" element={<Home categories={categories} />} />
-                <Route path="/:categoryId" element={<Catalog categories={categories} setCategories={setCategories} />} />
-                <Route path="/:categoryId/edit/:productId" element={<Catalog categories={categories} setCategories={setCategories} />} />
+                <Route path="/:categoryId" element={<Catalog />} />
+                <Route path="/:categoryId/edit/:productId" element={<Catalog />} />
             </Routes>
             <Footer />
         </BrowserRouter>
